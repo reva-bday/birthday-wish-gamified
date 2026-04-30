@@ -70,7 +70,31 @@ jobs:
 
 ## Running Locally
 
-1. Ensure Node.js is installed.
-2. Clone the repository and navigate into the folder.
-3. Install dependencies: `npm install`
-4. Start development server: `npm run dev`
+To run the project on your local machine, make sure you have Node.js installed, then follow these steps:
+
+1. **Clone the repository** and navigate into the project folder.
+2. **Install all dependencies** (You must do this first!):
+   ```bash
+   npm install
+   ```
+
+### Development Mode
+
+To start the local development server with hot-reloading:
+```bash
+npm run dev
+```
+
+### Testing the Production Build Locally
+
+To test the application exactly as it will appear when hosted on GitHub Pages (to verify asset paths and production optimizations):
+
+1. **Build the project**:
+   ```bash
+   npm run build
+   ```
+2. **Preview the build**:
+   ```bash
+   npm run preview
+   ```
+   Open your browser to the URL provided by Vite (e.g., `http://localhost:4173/birthday-wish-gamified/`) to verify everything works smoothly.
