@@ -17,7 +17,7 @@ const QUESTIONS = [
     answerIndex: 2, // Change in future
     imageSrc: getAssetPath('/assets/level3/scratch1.jpeg')
   },
-    {
+  {
     id: 2,
     question: "What was the very first gift you ever gave me?",
     options: ["Chocolate", "Greeting card", "Rakhi", "Key Chain"],
@@ -62,15 +62,29 @@ function ScratchCard({ imageSrc, onRevealed }: { imageSrc: string, onRevealed: (
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Fill with stone/gold texture
-    ctx.fillStyle = '#443f39'; // stone base
+    // Fill with shiny silver metallic gradient
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0, '#6b7280');
+    gradient.addColorStop(0.3, '#919aa4ff');
+    gradient.addColorStop(0.5, '#aab0bcff');
+    gradient.addColorStop(0.7, '#7a818cff');
+    gradient.addColorStop(1, '#4b5563');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // Add some noise or "gold leaf" text
-    ctx.fillStyle = '#c39a52';
+
+    // Add shimmer streaks for metallic effect
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+    for (let i = 0; i < 8; i++) {
+      const sx = Math.random() * canvas.width;
+      const sy = Math.random() * canvas.height;
+      ctx.fillRect(sx, sy, Math.random() * 60 + 20, 2);
+    }
+
+    // Add "Scratch to Reveal" text
+    ctx.fillStyle = '#6b7280';
     ctx.font = '20px Cinzel';
     ctx.textAlign = 'center';
-    ctx.fillText('Scratch to Reveal', canvas.width/2, canvas.height/2);
+    ctx.fillText('Scratch to Reveal', canvas.width / 2, canvas.height / 2);
 
     // Prepare for scratching
     ctx.globalCompositeOperation = 'destination-out';
@@ -98,7 +112,7 @@ function ScratchCard({ imageSrc, onRevealed }: { imageSrc: string, onRevealed: (
     const canvas = canvasRef.current;
     if (!canvas) return { x: 0, y: 0 };
     const rect = canvas.getBoundingClientRect();
-    
+
     let clientX, clientY;
     if ('touches' in e) {
       clientX = e.touches[0].clientX;
@@ -107,7 +121,7 @@ function ScratchCard({ imageSrc, onRevealed }: { imageSrc: string, onRevealed: (
       clientX = (e as React.MouseEvent).clientX;
       clientY = (e as React.MouseEvent).clientY;
     }
-    
+
     return {
       x: clientX - rect.left,
       y: clientY - rect.top
@@ -156,13 +170,13 @@ function ScratchCard({ imageSrc, onRevealed }: { imageSrc: string, onRevealed: (
   };
 
   return (
-    <div className="relative w-full max-w-sm aspect-square bg-stone-900 rounded-lg overflow-hidden border-2 border-royal-gold shadow-xl select-none">
+    <div className="relative w-full max-w-sm aspect-square bg-stone-900 rounded-lg overflow-hidden border-2 border-stone-800 shadow-xl select-none">
       <div className="absolute inset-0 flex flex-col items-center justify-center text-parchment-dark bg-stone">
         <span className="text-sm">Secret Memory</span>
         <span className="text-xs opacity-50 block mt-2">({imageSrc.split('/').pop()})</span>
       </div>
-      <img src={imageSrc} alt="Memory" className="absolute inset-0 w-full h-full object-cover z-0" 
-           onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }} />
+      <img src={imageSrc} alt="Memory" className="absolute inset-0 w-full h-full object-cover z-0"
+        onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0'; }} />
       <canvas
         ref={canvasRef}
         className={cn("absolute inset-0 z-10 w-full h-full cursor-crosshair transition-opacity duration-1000", isRevealed && "opacity-0 pointer-events-none")}
@@ -200,7 +214,7 @@ export function Level3MCQ({ onComplete }: Props) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [isAnswering, setIsAnswering] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  
+
   // State for scratch card phase
   const [showScratch, setShowScratch] = useState(false);
   const [scratchRevealed, setScratchRevealed] = useState(false);
@@ -209,7 +223,7 @@ export function Level3MCQ({ onComplete }: Props) {
 
   const handleOptionClick = (idx: number) => {
     if (isAnswering || showScratch) return;
-    
+
     setSelectedOption(idx);
     setIsAnswering(true);
     setErrorMsg('');
@@ -242,7 +256,7 @@ export function Level3MCQ({ onComplete }: Props) {
   };
 
   const activeSequenceNumber = Math.floor(((currentQIndex + (showScratch ? 1 : 0)) / QUESTIONS.length) * TOTAL_CELLS);
-  
+
   // Calculate reverse lookup for cell active states
   const cellActiveThresholds = useMemo(() => {
     const thresholds = new Array(TOTAL_CELLS).fill(0);
@@ -251,7 +265,7 @@ export function Level3MCQ({ onComplete }: Props) {
     });
     return thresholds;
   }, []);
-  
+
   return (
     <>
       {/* Base Gold Layer (Always present, but covered by Maroon Layer) */}
@@ -264,40 +278,40 @@ export function Level3MCQ({ onComplete }: Props) {
         {Array.from({ length: TOTAL_CELLS }).map((_, i) => {
           const isGold = cellActiveThresholds[i] < activeSequenceNumber;
           return (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className="relative w-full h-full transition-all duration-700 ease-in-out bg-[#5a1818] origin-center"
               style={{
                 opacity: isGold ? 0 : 1,
                 transform: isGold ? 'rotateX(90deg) scale(0.8)' : 'rotateX(0deg) scale(1)',
               }}
             >
-               <div className="absolute inset-0 opacity-60" style={{ backgroundImage: `url("${MAROON_PATTERN_URL}")`, backgroundSize: '40px 40px', backgroundPosition: 'left top', backgroundAttachment: 'fixed' }} />
+              <div className="absolute inset-0 opacity-60" style={{ backgroundImage: `url("${MAROON_PATTERN_URL}")`, backgroundSize: '40px 40px', backgroundPosition: 'left top', backgroundAttachment: 'fixed' }} />
             </div>
           );
         })}
       </div>
-      
-      <motion.div 
+
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95 }}
         className="p-4 sm:p-10 w-full max-w-2xl flex flex-col items-center z-10"
       >
-        <div className="bg-stone-950/80 absolute inset-0 pointer-events-none -z-10 rounded-3xl backdrop-blur-sm border border-stone-800" />
+        <div className="bg-white/2 absolute inset-0 pointer-events-none -z-10 rounded-3xl backdrop-blur-md border border-white/15" />
         <h2 className="text-2xl sm:text-3xl font-serif text-stone-50 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] tracking-wide mb-2">Level III: The Court of Whispers</h2>
         <div className="text-stone-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] mb-8 text-center text-xs sm:text-sm w-full flex justify-between items-center px-4">
           <span>Question {currentQIndex + 1} of {QUESTIONS.length}</span>
           <div className="flex gap-1">
-             {QUESTIONS.map((_, i) => (
-                <div key={i} className={cn("w-2 h-2 rounded-full", i < currentQIndex ? "bg-stone-200" : i === currentQIndex ? "bg-stone-200 animate-pulse" : "bg-stone-800 border border-stone-600")} />
-             ))}
+            {QUESTIONS.map((_, i) => (
+              <div key={i} className={cn("w-2 h-2 rounded-full", i < currentQIndex ? "bg-stone-200" : i === currentQIndex ? "bg-stone-200 animate-pulse" : "bg-stone-800 border border-stone-600")} />
+            ))}
           </div>
         </div>
 
         <AnimatePresence mode="wait">
           {!showScratch ? (
-            <motion.div 
+            <motion.div
               key="question-box"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -307,7 +321,7 @@ export function Level3MCQ({ onComplete }: Props) {
               <h3 className="text-xl sm:text-2xl font-serif text-stone-50 text-center mb-8 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
                 {q.question}
               </h3>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-6">
                 {q.options.map((opt, idx) => {
                   const isSelected = selectedOption === idx;
@@ -324,8 +338,8 @@ export function Level3MCQ({ onComplete }: Props) {
                       className={cn(
                         "p-4 rounded-lg border-2 text-left font-serif transition-colors",
                         isCorrect ? "bg-green-800 border-green-400 text-white" :
-                        isWrong ? "bg-red-800 border-red-500 text-white" :
-                        "bg-stone-900 border-stone-700 text-stone-200 hover:border-stone-400 hover:bg-stone-800"
+                          isWrong ? "bg-red-800 border-red-500 text-white" :
+                            "bg-stone-900 border-stone-700 text-stone-200 hover:border-stone-400 hover:bg-stone-800"
                       )}
                     >
                       {opt}
@@ -335,12 +349,12 @@ export function Level3MCQ({ onComplete }: Props) {
               </div>
 
               {errorMsg && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="flex items-center gap-2 text-red-300 mt-2 font-serif text-sm bg-red-950 px-4 py-2 rounded shadow-inner"
                 >
-                  <AlertCircle className="w-5 h-5"/> {errorMsg}
+                  <AlertCircle className="w-5 h-5" /> {errorMsg}
                 </motion.div>
               )}
             </motion.div>
@@ -354,10 +368,10 @@ export function Level3MCQ({ onComplete }: Props) {
               <h3 className="text-lg font-serif text-stone-50 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] mb-6 text-center">
                 Correct. Scratch the ancient seal to reveal your artifact.
               </h3>
-              
-              <ScratchCard 
-                imageSrc={q.imageSrc} 
-                onRevealed={() => setScratchRevealed(true)} 
+
+              <ScratchCard
+                imageSrc={q.imageSrc}
+                onRevealed={() => setScratchRevealed(true)}
               />
 
               <motion.button
@@ -367,8 +381,8 @@ export function Level3MCQ({ onComplete }: Props) {
                 disabled={!scratchRevealed}
                 className="mt-8 px-8 py-3 bg-stone-100 text-stone-900 font-serif font-bold rounded-full flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform"
               >
-                 {currentQIndex + 1 === QUESTIONS.length ? "Proceed to Final Chamber" : "Next Memory"}
-                 <CheckCircle className="w-5 h-5"/>
+                {currentQIndex + 1 === QUESTIONS.length ? "Proceed to Final Chamber" : "Next Memory"}
+                <CheckCircle className="w-5 h-5" />
               </motion.button>
             </motion.div>
           )}

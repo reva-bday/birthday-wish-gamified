@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { getAssetPath } from '../lib/constants';
 import { cn } from '../lib/utils';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, RotateCcw } from 'lucide-react';
 
 interface Props {
   onComplete: () => void;
@@ -16,7 +16,7 @@ export function Level4Puzzle({ onComplete }: Props) {
   const [tiles, setTiles] = useState<number[]>([]);
   const [isWon, setIsWon] = useState(false);
 
-  useEffect(() => {
+  const shuffleTiles = () => {
     // Start with a solved state
     let state = Array.from({length: TOTAL_TILES}, (_, i) => i);
     let emptyIdx = EMPTY_TILE_VAL;
@@ -47,6 +47,11 @@ export function Level4Puzzle({ onComplete }: Props) {
     }
     
     setTiles(state);
+    setIsWon(false);
+  };
+
+  useEffect(() => {
+    shuffleTiles();
   }, []);
 
   const handleTileClick = (index: number) => {
@@ -86,10 +91,21 @@ export function Level4Puzzle({ onComplete }: Props) {
     >
       <div className="bg-gradient-to-b from-transparent to-stone-900/50 absolute inset-0 pointer-events-none -z-10 rounded-3xl" />
       <h2 className="text-2xl sm:text-3xl font-serif text-royal-gold-light mb-4 text-center">Level IV: The Temple Murals</h2>
-      <p className="text-parchment-dark mb-8 text-center text-sm sm:text-base">
+      <p className="text-parchment-dark mb-4 text-center text-sm sm:text-base">
         A shattered fresco blocks the entrance to the inner sanctuary. 
         Slide the ancient stones to reveal the grand picture. 
       </p>
+
+      {!isWon && (
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={shuffleTiles}
+          className="mb-6 px-5 py-2 bg-stone-800/80 border border-royal-gold/30 text-parchment-dark font-serif text-sm rounded-full flex items-center gap-2 hover:border-royal-gold/60 transition-colors"
+        >
+          <RotateCcw className="w-4 h-4" /> Restart Puzzle
+        </motion.button>
+      )}
 
       {/* Frame for the puzzle */}
       <div className="relative p-2 bg-stone-light rounded-sm shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] border border-royal-gold/30">

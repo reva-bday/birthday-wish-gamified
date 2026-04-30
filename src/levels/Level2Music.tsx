@@ -25,6 +25,7 @@ export function Level2Music({ onComplete }: Props) {
   const [foundIds, setFoundIds] = useState<number[]>([]);
   const [isPlayingSnippet, setIsPlayingSnippet] = useState(false);
   const [gramophones, setGramophones] = useState<{id: number, x: number, y: number}[]>([]);
+  const [palaceLoaded, setPalaceLoaded] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -169,13 +170,14 @@ export function Level2Music({ onComplete }: Props) {
         )}>
           <img 
             src={getAssetPath('/assets/level2/palace.png')} 
-            onError={(e) => { e.currentTarget.src = fallbackPalace; }}
+            onLoad={() => setPalaceLoaded(true)}
+            onError={(e) => { e.currentTarget.src = fallbackPalace; setPalaceLoaded(true); }}
             alt="Palace Interior" 
             className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
           />
           
           <AnimatePresence>
-            {gramophones.map(g => {
+            {palaceLoaded && gramophones.map(g => {
                 const found = foundIds.includes(g.id);
                 return (
                   <motion.button
@@ -187,8 +189,8 @@ export function Level2Music({ onComplete }: Props) {
                     onClick={() => handleGramophoneClick(g.id)}
                     disabled={found || isPlayingSnippet || gameState === 'won'}
                     className={cn(
-                      "absolute flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 shadow",
-                      found ? "w-10 h-10 text-royal-gold ring-2 ring-royal-gold bg-black/60 shadow-[0_0_20px_rgba(195,154,82,0.8)] z-10" : "w-10 h-10 text-amber-600/80 bg-stone-900/40 hover:bg-black/50 border border-amber-900/30 cursor-pointer hover:border-transparent"
+                      "absolute flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300",
+                      found ? "w-10 h-10 text-royal-gold drop-shadow-[0_0_10px_rgba(195,154,82,0.8)] z-10" : "w-10 h-10 text-amber-600/80 cursor-pointer hover:brightness-125"
                     )}
                     style={{ left: `${g.x}%`, top: `${g.y}%` }}
                   >
@@ -196,7 +198,7 @@ export function Level2Music({ onComplete }: Props) {
                         <img 
                           src={getAssetPath('/assets/level2/gramophone.png')} 
                           alt="gramophone" 
-                          className="w-8 h-8 object-contain drop-shadow" 
+                          className="w-8 h-8 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]" 
                           onError={(e) => {
                              e.currentTarget.style.display = 'none';
                              e.currentTarget.nextElementSibling?.classList.remove('hidden');

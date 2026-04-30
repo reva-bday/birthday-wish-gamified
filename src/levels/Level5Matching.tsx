@@ -10,10 +10,10 @@ interface Props {
 // Dummy data for Level 5
 const MESSAGES_DATA = [
   { id: 'm1', text: "Happy Birthday da, inaiku matum dhan idhalam solran adhunala ketuko. Enanu yosikadha romba. Unu solradhuku ila, poi velaiya paru avlodhann🥱. Be brave and confident wherever you go!! - UG ▶️ Office ▶️ PG", friendName: "Vignesh" },
-  { id: 'm2', text: "Happy birthday panni!", friendName: "Ram" },
-  { id: 'm3', text: "Gappy Bithday Reva!", friendName: "Gk" },
-  { id: 'm4', text: "Ini vaazhum kaalangal yaavum minukkum minu minukkume!", friendName: "Sri" },
-  { id: 'm5', text: "puthagam mugame", friendName: "Jc" },
+  { id: 'm2', text: "Happy birthday panni!🥳", friendName: "Ram" },
+  { id: 'm3', text: "Gappy Bithday Reva! 💜", friendName: "Gk" },
+  { id: 'm4', text: "Ini vaazhum kaalangal yaavum minukkum minu minukkume! ✨", friendName: "Sri" },
+  { id: 'm5', text: "Let’s make it a habit to sit down for real deep talks, and wish you become an even stronger!", friendName: "Jc" },
 ];
 
 export function Level5Matching({ onComplete }: Props) {
@@ -148,15 +148,15 @@ export function Level5Matching({ onComplete }: Props) {
                 className="w-full relative cursor-grab bg-transparent select-none z-10 group mt-5"
               >
                 <div className={cn(
-                  "relative w-full rounded-lg bg-gradient-to-b from-[#f8fafc] to-[#cbd5e1] border-2 border-slate-400 p-3 sm:p-4 flex items-center justify-center min-h-[5rem] transition-all",
+                  "relative w-full rounded-lg bg-gradient-to-b from-[#d1d5db] to-[#6b7280] border-2 border-stone-700 p-3 sm:p-4 flex items-center justify-center min-h-[5rem] transition-all",
                   isSelected ? "ring-2 ring-royal-gold/60 scale-105 z-20 shadow-[0_10px_25px_rgba(0,0,0,0.6)]" : "group-hover:brightness-110 shadow-[0_5px_15px_rgba(0,0,0,0.4)]"
                 )}>
                   {/* Silver Tab Top */}
-                  <div className="absolute -top-[24px] left-1/2 -translate-x-1/2 w-[32px] h-[24px] rounded-t-full bg-[#f8fafc] border-t-2 border-l-2 border-r-2 border-slate-400" />
+                  <div className="absolute -top-[24px] left-1/2 -translate-x-1/2 w-[32px] h-[24px] rounded-t-full bg-[#d1d5db] border-t-2 border-l-2 border-r-2 border-stone-700" />
                   {/* Blocker for Tab Seam */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[28px] h-[4px] bg-[#f8fafc] -translate-y-[2px]" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[28px] h-[4px] bg-[#d1d5db] -translate-y-[2px]" />
 
-                  <span className="relative z-20 pointer-events-none drop-shadow-[0_1px_1px_rgba(255,255,255,1)] font-serif italic text-slate-800 text-center text-xs sm:text-sm font-medium leading-relaxed">"{msg.text}"</span>
+                  <span className="relative z-20 pointer-events-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] font-serif italic text-stone-200 text-center text-xs sm:text-sm font-medium leading-relaxed">"{msg.text}"</span>
                 </div>
               </motion.div>
             );
