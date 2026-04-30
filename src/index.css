@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Montserrat:wght@900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-chola-red: #350f14;
+  --color-chola-red-light: #521820;
+  --color-royal-gold: #c39a52;
+  --color-royal-gold-light: #e6b963;
+  --color-parchment: #f4ecdf;
+  --color-parchment-dark: #e0d2bd;
+  --color-stone: #2c2925;
+  --color-stone-light: #443f39;
+
+  --font-serif: "Cinzel", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sans: "Lora", ui-sans-serif, system-ui, sans-serif;
+  
+  --bg-texture: url('data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.05"/%3E%3C/svg%3E');
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-chola-red text-parchment overflow-x-hidden;
+    background-image: var(--bg-texture);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-royal-gold;
+  }
+}
+
+/* Custom Scrollbar for immersive theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-chola-red);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-royal-gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-royal-gold-light);
+}
+
+/* Base audio player styling to look less modern/native */
+.theme-audio-player {
+  filter: sepia(0.5) hue-rotate(-30deg) saturate(1.5) contrast(1.2);
+  border-radius: 99px;
+  background: var(--color-stone-light);
+}
+
