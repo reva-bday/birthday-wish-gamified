@@ -46,7 +46,7 @@ export function Level1Chronology({ onComplete }: Props) {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
@@ -55,7 +55,7 @@ export function Level1Chronology({ onComplete }: Props) {
       <div className="bg-gradient-to-b from-transparent to-stone-900/50 absolute inset-0 pointer-events-none -z-10 rounded-3xl" />
       <h2 className="text-2xl sm:text-3xl font-serif text-royal-gold-light mb-4 text-center">Level I: The Chronology of Memories</h2>
       <p className="text-parchment-dark mb-8 text-center max-w-xl text-sm sm:text-base leading-relaxed hidden sm:block">
-        As the royal 'Hyperthymeist', the flow of time bends to your recollection. 
+        As the royal 'Hyperthymeist', the flow of time bends to your recollection.
         Drag and drop the instances of life into their exact historical timeline.
       </p>
       <p className="text-parchment-dark mb-6 text-center max-w-xl text-sm leading-relaxed sm:hidden">
@@ -84,9 +84,9 @@ export function Level1Chronology({ onComplete }: Props) {
                   <span>Missing Relic</span>
                   <span className="opacity-50 break-all">/assets/level1/pic{item.expectedOrder + 1}.jpeg</span>
                 </div>
-                <img 
-                  src={item.src} 
-                  alt="Memory" 
+                <img
+                  src={item.src}
+                  alt="Memory"
                   className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.opacity = '0';
@@ -105,12 +105,12 @@ export function Level1Chronology({ onComplete }: Props) {
         disabled={isCorrect}
         className={cn(
           "w-full sm:w-auto px-8 py-4 font-serif font-bold text-lg rounded-full uppercase tracking-wider flex items-center justify-center gap-2",
-          isCorrect 
-            ? "bg-green-700 text-green-100 shadow-[0_0_20px_rgba(21,128,61,0.6)]" 
+          isCorrect
+            ? "bg-green-700 text-green-100 shadow-[0_0_20px_rgba(21,128,61,0.6)]"
             : "bg-gradient-to-r from-royal-gold to-royal-gold-light text-chola-red shadow-[0_0_15px_rgba(195,154,82,0.4)]"
         )}
       >
-        {isCorrect ? <><CheckCircle className="w-5 h-5"/> Epoch Restored</> : "Seal the Timeline"}
+        {isCorrect ? <><CheckCircle className="w-5 h-5" /> Epoch Restored</> : "Seal the Timeline"}
       </motion.button>
     </motion.div>
   );
