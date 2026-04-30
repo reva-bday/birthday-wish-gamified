@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GameLevel } from '../types';
-import { Crown, Scroll, Home, Menu, X } from 'lucide-react';
+import { Crown, Scroll, Home, Menu, X, Archive } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { LEVEL_ORDER } from '../lib/constants';
 
@@ -33,12 +33,31 @@ export function GameLayout({ children, amulets, scrolls, onGoHome, onSkipToLevel
         animate={{ y: 0, opacity: 1 }}
         className="w-full max-w-4xl flex justify-between items-center fixed top-0 inset-x-0 mx-auto px-4 sm:px-8 py-4 z-50"
       >
-        <button 
-          onClick={onGoHome}
-          className="flex items-center gap-2 bg-stone-light/40 px-3 py-2 sm:px-4 sm:py-2 rounded-full border border-royal-gold/30 backdrop-blur-sm -ml-2 sm:-ml-0 hover:bg-royal-gold/20 transition-colors"
-        >
-          <Home className="w-5 h-5 text-royal-gold-light" />
-        </button>
+        <div className="flex gap-2 items-center">
+          <button 
+            onClick={onGoHome}
+            className="flex items-center gap-2 bg-stone-light/40 px-3 py-2 sm:px-4 sm:py-2 rounded-full border border-royal-gold/30 backdrop-blur-sm -ml-2 sm:-ml-0 hover:bg-royal-gold/20 transition-colors"
+          >
+            <Home className="w-5 h-5 text-royal-gold-light" />
+          </button>
+          
+          {vaultUnlocked && (
+            <motion.button 
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              onClick={() => onSkipToLevel('gallery')}
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-full border backdrop-blur-sm transition-all",
+                currentLevel === 'gallery'
+                  ? "bg-royal-gold/40 border-royal-gold shadow-[0_0_15px_rgba(195,154,82,0.5)]" 
+                  : "bg-stone-light/40 border-royal-gold/30 shadow-[0_0_15px_rgba(195,154,82,0.8)] animate-[pulse_2s_ease-in-out_infinite] hover:bg-royal-gold/20"
+              )}
+              title="Visit Vault"
+            >
+              <Archive className="w-5 h-5 text-royal-gold-light" />
+            </motion.button>
+          )}
+        </div>
 
         <div className="flex gap-2 sm:gap-4 items-center">
             <div className="flex items-center gap-1 sm:gap-2 bg-stone-light/40 px-3 py-2 sm:px-4 sm:py-2 rounded-full border border-royal-gold/10 backdrop-blur-sm">

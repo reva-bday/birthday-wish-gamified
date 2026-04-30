@@ -10,7 +10,7 @@ interface Props {
   onUnlock: () => void;
 }
 
-const PASSWORD = "ERA"; // User can change this later!
+const PASSWORD = "REVA"; // User can change this later!
 
 export function Finale({ amuletPieces, onUnlock }: Props) {
   const [amuletsMerged, setAmuletsMerged] = useState(false);
@@ -38,16 +38,16 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
 
   if (photoRevealed) {
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="fixed inset-0 z-40 bg-black flex items-center justify-center overflow-hidden"
       >
-        <img 
-          src={getAssetPath('/assets/finale.jpeg')} 
+        <img
+          src={getAssetPath('/assets/finale.jpeg')}
           onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1517260739337-6799d239ce83?q=80&w=1600&auto=format&fit=crop"; }}
-          alt="Happy Birthday" 
+          alt="Happy Birthday"
           /* 
            * === ZOOM TUNING FOR MOBILE ===
            * We use 'object-contain' so it doesn't crop drastically, and zoom it in 
@@ -67,12 +67,22 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
           <span className="text-4xl sm:text-5xl md:text-6xl text-[#D4AF37] -mb-4 sm:-mb-6 z-10" style={{ fontFamily: '"Great Vibes", cursive', textShadow: '2px 2px 5px rgba(0,0,0,1)' }}>Happy Birthday</span>
           <span className="text-5xl sm:text-7xl md:text-8xl text-[#DFB941] tracking-widest uppercase z-0" style={{ fontFamily: '"Montserrat", sans-serif', textShadow: '4px 4px 10px rgba(0,0,0,0.9), 0px 0px 20px rgba(0,0,0,0.5)' }}>REVATHI</span>
         </motion.div>
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: [-20, 0, 0, -20], opacity: [0, 1, 1, 0] }}
+          transition={{ delay: 2, duration: 6, times: [0, 0.15, 0.85, 1] }}
+          className="absolute top-24 left-0 right-0 flex justify-center pointer-events-none z-50"
+        >
+          <span className="bg-black/50 backdrop-blur-sm border border-royal-gold/40 text-royal-gold-light font-serif text-sm px-5 py-2 rounded-full drop-shadow-lg">
+            ✨ Visit the Vault to see all your collected artifacts!
+          </span>
+        </motion.div>
       </motion.div>
     );
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -93,7 +103,7 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
           const hasPiece = i < amuletPieces;
           const angleDeg = i * 72;
           const rad = (angleDeg - 90) * (Math.PI / 180);
-          
+
           return (
             <motion.div
               key={i}
@@ -126,7 +136,7 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: amuletsMerged ? 1 : 0, opacity: amuletsMerged ? 1 : 0 }}
-          transition={{ delay:amuletsMerged ? 1 : 0, duration: 0.8, type: 'spring' }}
+          transition={{ delay: amuletsMerged ? 1 : 0, duration: 0.8, type: 'spring' }}
           className="absolute z-30 w-24 h-24 rounded-full bg-[#059669] border-[6px] border-[#fef08a] flex items-center justify-center shadow-[inset_0_0_40px_#022c22,0_0_50px_#10b981] cursor-pointer hover:scale-105 transition-transform overflow-hidden group"
           onClick={() => setShowPassword(true)}
         >
@@ -144,7 +154,7 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <button 
+            <button
               onClick={handleMerge}
               className="px-8 py-3 bg-gradient-to-r from-royal-gold to-royal-gold-light text-chola-red font-serif font-bold text-lg rounded shadow-[0_0_15px_rgba(195,154,82,0.4)] uppercase tracking-widest"
             >
@@ -165,8 +175,8 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
               "Speak the final word to break the seal."
             </p>
             <div className="flex w-full">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Enter password..."
                 value={passwordInput}
                 onChange={e => setPasswordInput(e.target.value)}
@@ -176,7 +186,7 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
                 )}
                 onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
               />
-              <button 
+              <button
                 onClick={handleUnlock}
                 className="bg-royal-gold p-3 rounded-r border-2 border-l-0 border-royal-gold hover:bg-royal-gold-light text-chola-red transition-colors"
               >
@@ -186,7 +196,16 @@ export function Finale({ amuletPieces, onUnlock }: Props) {
             {errorStatus && (
               <span className="text-red-400 font-serif text-sm">The seal remains intact. The word is incorrect.</span>
             )}
-            <span className="text-[10px] text-stone-light mt-4">Hint: The password is currently set to "ERA" in the code.</span>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-2 bg-stone-900/60 border border-royal-gold/20 rounded-xl px-4 py-2 mt-2"
+            >
+              <span className="text-royal-gold text-base">🏛️</span>
+              <span className="text-parchment-dark font-serif text-xs text-center italic">Once unlocked, visit the Vault to see all your collected artifacts.</span>
+            </motion.div>
+            <span className="text-[10px] text-stone-light mt-2">Hint: The password is currently set to "ERA" in the code.</span>
           </motion.div>
         )}
       </AnimatePresence>
